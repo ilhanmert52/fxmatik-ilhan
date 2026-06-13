@@ -32,19 +32,19 @@ def main_panel():
     st.sidebar.title("📈 fxmatik ilhan")
     st.sidebar.write("Hoş geldiniz, İlhan Bey")
     
-    # Sembol Eşleştirme (TradingView Iframe için optimize edilmiş kodlar)
+    # Yeni ve engellenemeyen grafik bağlantı şablonu
     sembol_dict = {
-        "BTCUSDT (Bitcoin)": {"tv": "BINANCE:BTCUSDT", "sl": 64036.76, "giris": 62566.29, "tp1": 61095.82, "tp2": 59625.34, "yon": "Aşağı", "destek": "62198.11", "direnc": "91327.91", "ara_direnc": "81046.10"},
-        "XAUUSD (Ons Altın)": {"tv": "FX:XAUUSD", "sl": 2355.20, "giris": 2320.00, "tp1": 2295.50, "tp2": 2260.00, "yon": "Aşağı", "destek": "2280.40", "direnc": "2450.00", "ara_direnc": "2385.00"},
-        "EURUSD (Euro/Dolar)": {"tv": "FX:EURUSD", "sl": 1.0620, "giris": 1.0750, "tp1": 1.0820, "tp2": 1.0950, "yon": "Yukarı", "destek": "1.0680", "direnc": "1.1020", "ara_direnc": "1.0890"},
-        "THYAO (Türk Hava Yolları)": {"tv": "BIST:THYAO", "sl": 295.50, "giris": 305.00, "tp1": 318.00, "tp2": 332.00, "yon": "Yukarı", "destek": "288.00", "direnc": "345.00", "ara_direnc": "320.00"}
+        "BTCUSDT (Bitcoin)": {"tv": "BTCUSDT", "sl": 64036.76, "giris": 62566.29, "tp1": 61095.82, "tp2": 59625.34, "yon": "Aşağı", "destek": "62198.11", "direnc": "91327.91", "ara_direnc": "81046.10"},
+        "XAUUSD (Ons Altın)": {"tv": "XAUUSD", "sl": 2355.20, "giris": 2320.00, "tp1": 2295.50, "tp2": 2260.00, "yon": "Aşağı", "destek": "2280.40", "direnc": "2450.00", "ara_direnc": "2385.00"},
+        "EURUSD (Euro/Dolar)": {"tv": "EURUSD", "sl": 1.0620, "giris": 1.0750, "tp1": 1.0820, "tp2": 1.0950, "yon": "Yukarı", "destek": "1.0680", "direnc": "1.1020", "ara_direnc": "1.0890"},
+        "THYAO (Türk Hava Yolları)": {"tv": "THYAO", "sl": 295.50, "giris": 305.00, "tp1": 318.00, "tp2": 332.00, "yon": "Yukarı", "destek": "288.00", "direnc": "345.00", "ara_direnc": "320.00"}
     }
     
     sembol_secim = st.sidebar.selectbox("Analiz Edilecek Sembol", list(sembol_dict.keys()))
     sdata = sembol_dict[sembol_secim]
     
     periyot = st.sidebar.radio("Zaman Dilimi", ["1G (Günlük)", "4S (4 Saatlik)", "1S (1 Saatlik)", "15D (15 Dakikalık)"])
-    tv_interval = "D" if periyot == "1G (Günlük)" else "240" if periyot == "4S (4 Saatlik)" else "60" if periyot == "1S (1 Saatlik)" else "15"
+    tv_interval = "d" if periyot == "1G (Günlük)" else "240" if periyot == "4S (4 Saatlik)" else "60" if periyot == "1S (1 Saatlik)" else "15"
 
     if st.sidebar.button("🚪 Güvenli Çıkış", use_container_width=True):
         st.session_state.logged_in = False
@@ -84,14 +84,14 @@ def main_panel():
 
     st.divider()
 
-    # Alt Bölüm: Engellenemeyen Güvenli Iframe Grafik Altyapısı
-    st.markdown("### 📉 Gelişmiş Grafik Paneli (TradingView Teknik Altyapısı)")
+    # Alt Bölüm: Engellenemeyen Evrensel Grafik Motoru
+    st.markdown("### 📉 Gelişmiş Grafik Paneli (Canlı Piyasa Yayını)")
     st.markdown("🛠️ **Grafik Katmanları:** [Gann Tayfı] [Kutu Kristal Seviyeler] [Tp Seviyeleri] [Kutu Hayyam]")
     
-    # Tarayıcıların engelleyemediği direkt iframe url yapısı
-    iframe_url = f"https://tradingview.com{sdata['tv']}&interval={tv_interval}&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Europe%2FIstanbul&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=tr&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term={sdata['tv']}"
+    # Tarayıcı korumalarına takılmayan, doğrudan canlı piyasa grafik yayın linki
+    canli_grafik_url = f"https://tradingview.com{sdata['tv']}&interval={tv_interval}&theme=light&style=1&timezone=Europe%2FIstanbul&locale=tr&toolbarbg=f1f3f6"
     
-    components.iframe(iframe_url, height=580, scrolling=False)
+    components.iframe(canli_grafik_url, height=580, scrolling=False)
 
 # Sayfa Yönlendirmesi
 if st.session_state.logged_in:
