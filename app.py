@@ -32,10 +32,10 @@ def main_panel():
     st.sidebar.title("📈 fxmatik ilhan")
     st.sidebar.write("Hoş geldiniz, İlhan Bey")
     
-    # Sembol Eşleştirme (TradingView için tam uyumlu kodlar)
+    # Sembol Eşleştirme (TradingView Iframe için optimize edilmiş kodlar)
     sembol_dict = {
         "BTCUSDT (Bitcoin)": {"tv": "BINANCE:BTCUSDT", "sl": 64036.76, "giris": 62566.29, "tp1": 61095.82, "tp2": 59625.34, "yon": "Aşağı", "destek": "62198.11", "direnc": "91327.91", "ara_direnc": "81046.10"},
-        "XAUUSD (Ons Altın)": {"tv": "OANDA:XAUUSD", "sl": 2355.20, "giris": 2320.00, "tp1": 2295.50, "tp2": 2260.00, "yon": "Aşağı", "destek": "2280.40", "direnc": "2450.00", "ara_direnc": "2385.00"},
+        "XAUUSD (Ons Altın)": {"tv": "FX:XAUUSD", "sl": 2355.20, "giris": 2320.00, "tp1": 2295.50, "tp2": 2260.00, "yon": "Aşağı", "destek": "2280.40", "direnc": "2450.00", "ara_direnc": "2385.00"},
         "EURUSD (Euro/Dolar)": {"tv": "FX:EURUSD", "sl": 1.0620, "giris": 1.0750, "tp1": 1.0820, "tp2": 1.0950, "yon": "Yukarı", "destek": "1.0680", "direnc": "1.1020", "ara_direnc": "1.0890"},
         "THYAO (Türk Hava Yolları)": {"tv": "BIST:THYAO", "sl": 295.50, "giris": 305.00, "tp1": 318.00, "tp2": 332.00, "yon": "Yukarı", "destek": "288.00", "direnc": "345.00", "ara_direnc": "320.00"}
     }
@@ -52,12 +52,11 @@ def main_panel():
 
     st.title(f"📊 fxmatik ilhan | {sembol_secim}")
     
-    # Üst Bölüm: Kâhin Analizler (Görsel 2'deki fxmatik cümle yapısı)
+    # Üst Bölüm: Kâhin Analizler
     st.markdown("### 🤖 Kâhin Analiz Robotu")
     
     col_text, col_tables = st.columns([1.2, 1])
     
-    # Tarihleri dinamik gösterelim ki her gün güncel dursun
     bugun = datetime.date.today()
     tarih_ana = (bugun - datetime.timedelta(days=153)).strftime("%Y-%m-%d")
     tarih_ara1 = (bugun - datetime.timedelta(days=28)).strftime("%Y-%m-%d")
@@ -75,7 +74,6 @@ def main_panel():
         yon_renk = "red" if sdata['yon'] == "Aşağı" else "green"
         st.markdown(f"**Kâhin Durum: Güvenli İşlem** | Yön: <span style='color:{yon_renk};'><b>{sdata['yon']}</b></span>", unsafe_allow_html=True)
         
-        # Orijinal fxmatik sinyal tablosu tasarımı
         st.markdown(f"""
 
 | 🛑 SL (Stop) | 💵 Giriş Fiyatı | 🎯 TP 1 (Hedef) | 🎯 TP 2 (Hedef) |
@@ -86,37 +84,14 @@ def main_panel():
 
     st.divider()
 
-    # Alt Bölüm: Canlı Grafik Entegrasyonu (Zorlu yükleme ve geniş araç çubuklu)
+    # Alt Bölüm: Engellenemeyen Güvenli Iframe Grafik Altyapısı
     st.markdown("### 📉 Gelişmiş Grafik Paneli (TradingView Teknik Altyapısı)")
     st.markdown("🛠️ **Grafik Katmanları:** [Gann Tayfı] [Kutu Kristal Seviyeler] [Tp Seviyeleri] [Kutu Hayyam]")
     
-    # Tam özellikli, araç çubukları açık TradingView Grafik Modülü
-    tradingview_widget_code = f"""
-    <div class="tradingview-widget-container" style="height:550px;width:100%;">
-      <div id="tv-chart-widget" style="height:100%;width:100%;"></div>
-      <script type="text/javascript" src="https://tradingview.com"></script>
-      <script type="text/javascript">
-      new TradingView.widget({{
-        "width": "100%",
-        "height": "100%",
-        "symbol": "{sdata['tv']}",
-        "interval": "{tv_interval}",
-        "timezone": "Europe/Istanbul",
-        "theme": "light",
-        "style": "1",
-        "locale": "tr",
-        "toolbar_bg": "#f1f3f6",
-        "enable_publishing": false,
-        "hide_side_toolbar": false,
-        "allow_symbol_change": true,
-        "save_image": false,
-        "studies": ["RSI@tv-basicstudies", "MASimple@tv-basicstudies"],
-        "container_id": "tv-chart-widget"
-      }});
-      </script>
-    </div>
-    """
-    components.html(tradingview_widget_code, height=570, scrolling=False)
+    # Tarayıcıların engelleyemediği direkt iframe url yapısı
+    iframe_url = f"https://tradingview.com{sdata['tv']}&interval={tv_interval}&symboledit=1&saveimage=1&toolbarbg=f1f3f6&studies=%5B%5D&theme=light&style=1&timezone=Europe%2FIstanbul&studies_overrides=%7B%7D&overrides=%7B%7D&enabled_features=%5B%5D&disabled_features=%5B%5D&locale=tr&utm_source=localhost&utm_medium=widget&utm_campaign=chart&utm_term={sdata['tv']}"
+    
+    components.iframe(iframe_url, height=580, scrolling=False)
 
 # Sayfa Yönlendirmesi
 if st.session_state.logged_in:
