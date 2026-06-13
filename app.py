@@ -22,7 +22,7 @@ def login_page():
         
         if st.button("Sisteme Giriş Yap", use_container_width=True):
             # Sadece sizin kullanacağınız giriş bilgileri
-            if email == "ilhan@fxmatik.com" and password == "ilhan123":
+            if email == "ilhan@fxmatik.com" and password == "ilhan155353":
                 st.session_state.logged_in = True
                 st.rerun()
             else:
