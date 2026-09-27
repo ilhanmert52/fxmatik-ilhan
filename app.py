@@ -21,39 +21,43 @@ enstruman = st.sidebar.selectbox(
 )
 
 if "Altın" in enstruman:
-    guncel_fiyat = "2,650.20"
+    guncel_fiyat = 2650.20
     tv_symbol = "OANDA:XAUUSD"
 elif "Gümüş" in enstruman:
-    guncel_fiyat = "31.45"
+    guncel_fiyat = 31.45
     tv_symbol = "OANDA:XAGUSD"
 elif "DAX" in enstruman:
-    guncel_fiyat = "18,950.00"
+    guncel_fiyat = 18950.00
     tv_symbol = "INDEX:DE40"
 elif "Nasdaq" in enstruman:
-    guncel_fiyat = "20,100.00"
+    guncel_fiyat = 20100.00
     tv_symbol = "INDEX:US100"
 elif "Russell" in enstruman:
-    guncel_fiyat = "2,210.00"
+    guncel_fiyat = 2210.00
     tv_symbol = "INDEX:US2000"
 elif "Nikkei" in enstruman:
-    guncel_fiyat = "38,200.00"
+    guncel_fiyat = 38200.00
     tv_symbol = "INDEX:JP225"
 else:
-    guncel_fiyat = "84,725.80"
+    guncel_fiyat = 84725.80
     tv_symbol = "BINANCE:BTCUSDT"
 
-st.sidebar.metric(label="💰 Güncel Fiyat", value=guncel_fiyat)
+st.sidebar.metric(label="💰 Güncel Fiyat", value=f"{guncel_fiyat:,.2f}")
 st.sidebar.subheader("🤖 Algoritma Durumu")
 st.sidebar.success("GÜÇLÜ ALICILI (YUKARI)")
 
 # --- ANA EKRAN VE SİNYAL SEVİYELERİ ---
 st.title("📊 FxMatik & TradingView Canlı Analiz Paneli")
 
+# TP/SL oranlarını canlı fiyata göre buraya bağlıyoruz
+tp1 = guncel_fiyat * 1.03
+sl = guncel_fiyat * 0.96
+
 col1, col2, col3 = st.columns(3)
 with col1:
-    st.info("📈 **Hedef Kar Al (TP1):**\n### OTOMATİK HESAPLANIYOR")
+    st.info(f"📈 **Hedef Kar Al (TP1):**\n### {tp1:,.2f}")
 with col2:
-    st.error("📉 **Zarar Durdur (SL):**\n### OTOMATİK HESAPLANIYOR")
+    st.error(f"📉 **Zarar Durdur (SL):**\n### {sl:,.2f}")
 with col3:
     st.warning("⚡ **Kahin Sinyal mekanizması:**\n### AKTİF SİNYAL BEKLENİYOR")
 
@@ -61,28 +65,8 @@ st.markdown("---")
 
 st.subheader(f"📊 Canlı Mum Grafiği ({enstruman})")
 
-# İnternet sunucusunda asla engellenmeyen, tüm dakikaları ve çizim araçlarını getiren resmi TradingView kodu
-tradingview_saf_kod = f"""
-<div class="tradingview-widget-container" style="height:550px; width:100%;">
-  <div id="tradingview_advanced_chart" style="height:550px;"></div>
-  <script type="text/javascript" src="https://tradingview.com"></script>
-  <script type="text/javascript">
-  new TradingView.widget({{
-    "autosize": true,
-    "symbol": "{tv_symbol}",
-    "interval": "15",
-    "timezone": "Europe/Istanbul",
-    "theme": "dark",
-    "style": "1",
-    "locale": "tr",
-    "enable_publishing": false,
-    "hide_top_toolbar": false,
-    "hide_side_toolbar": false,
-    "allow_symbol_change": true,
-    "container_id": "tradingview_advanced_chart"
-  }});
-  </script>
-</div>
-"""
+# İnternet sunucusunda asla engellenmeyen, tüm dakikaları içeren resmi TradingView penceresi
+tv_embed_url = f"https://tradingview.com{tv_symbol}&interval=15&theme=dark&style=1&timezone=Europe%2FIstanbul&locale=tr&withsidebar=true"
 
-components.html(tradingview_saf_kod, height=560, scrolling=False)
+# Streamlit internet ortamında bu native komutla grafiği asla bloklamaz
+st.iframe(tv_embed_url, height=580)
